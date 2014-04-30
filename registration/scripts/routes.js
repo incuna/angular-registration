@@ -17,7 +17,7 @@
             .when('/password-reset/', {
                 templateUrl: 'templates/registration/password_reset_request.html',
                 controller: 'PasswordResetRequestCtrl',
-                title: 'Reset your password'
+                title: gettext('Reset your password')
             })
             .when('/password-change/:token*\/', {
                 templateUrl: 'templates/registration/password_change.html',
