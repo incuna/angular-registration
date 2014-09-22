@@ -1,3 +1,5 @@
+# This project has been deprecated in favour of [angular-user-management](https://github.com/incuna/angular-user-management)
+
 # angular-registration
 
 # Installation
