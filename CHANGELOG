@@ -1,3 +1,7 @@
+# 0.5.6
+
+* Fix for translating the password success message
+
 # 0.5.5
 
 * Password reset request fields are now loaded from the API.

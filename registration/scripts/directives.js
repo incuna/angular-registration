@@ -34,10 +34,12 @@
                             data: scope.data
                         }).then(function () {
                             var email = scope.data.email;
+                            var successMsg = gettextCatalog.getString('We\'ve sent an email to {{userEmail}} that contains a link to reset your password.', {userEmail: email});
+
                             scope.data = {};
                             // TODO: this should come from the API.
                             $rootScope.app.page.messages = [{
-                                msg: gettextCatalog.getString('We\'ve sent an email to ' + email + ' that contains a link to reset your password.'),
+                                msg: successMsg,
                                 type: 'success'
                             }];
 
