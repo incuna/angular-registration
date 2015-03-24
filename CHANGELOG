@@ -1,6 +1,9 @@
+# 0.5.7
+* Added check for empty email when resetting password.
+
 # 0.5.6
 
-* Fix for translating the password success message
+* Fix for translating the password success message.
 
 # 0.5.5
 
