@@ -10,6 +10,8 @@
             templateUrl: 'templates/registration/password_reset_request_form.html',
             link: function (scope, element, attrs) {
                 var form = scope['password-reset-request'];
+                scope.emptyEmail = false;
+                var apiError = false;
 
                 var MODULE_SETTINGS = angular.extend({}, REGISTRATION, PROJECT_SETTINGS.REGISTRATION);
 
@@ -23,8 +25,12 @@
                 });
 
                 scope.resetPassword = function (deferred) {
-                    if (!form.$pristine) {
-                        angular.forEach(scope.fields, function(value, key){
+                    if (scope.emptyEmail) {
+                        scope.emptyEmail = false;
+                        apiError = false;
+                    }
+                    if (!form.$pristine && scope.data.email) {
+                        angular.forEach(scope.fields, function (value, key) {
                             value.errors = '';
                         });
 
@@ -34,6 +40,7 @@
                             data: scope.data
                         }).then(function () {
                             var email = scope.data.email;
+
                             var successMsg = gettextCatalog.getString('We\'ve sent an email to {{userEmail}} that contains a link to reset your password.', {userEmail: email});
 
                             scope.data = {};
@@ -56,7 +63,13 @@
                             if (angular.isDefined(deferred)) {
                                 deferred.notify('reject', response);
                             }
+                            apiError = true;
                         });
+                    } else {
+                        //check there are no other error messages on the screen from the api
+                        if (!apiError) {
+                            scope.emptyEmail = true;
+                        }
                     }
                 };
             }
