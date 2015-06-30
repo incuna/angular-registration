@@ -23,41 +23,39 @@
                 });
 
                 scope.resetPassword = function (deferred) {
-                    if (!form.$pristine) {
-                        angular.forEach(scope.fields, function(value, key){
-                            value.errors = '';
+                    angular.forEach(scope.fields, function(value, key){
+                        value.errors = '';
+                    });
+
+                    $http({
+                        method: 'POST',
+                        url: PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PASSWORD_RESET_REQUEST_ENDPOINT,
+                        data: scope.data
+                    }).then(function () {
+                        var email = scope.data.email;
+                        var successMsg = gettextCatalog.getString('We\'ve sent an email to {{userEmail}} that contains a link to reset your password.', {userEmail: email});
+
+                        scope.data = {};
+                        // TODO: this should come from the API.
+                        $rootScope.app.page.messages = [{
+                            msg: successMsg,
+                            type: 'success'
+                        }];
+
+                        form.$setPristine();
+
+                        if (angular.isDefined(deferred)) {
+                            deferred.notify('resolve', response);
+                        }
+                    }, function (response) {
+                        angular.forEach(response.data, function (error, field) {
+                            scope.fields[field].errors = error[0];
                         });
 
-                        $http({
-                            method: 'POST',
-                            url: PROJECT_SETTINGS.API_ROOT + MODULE_SETTINGS.PASSWORD_RESET_REQUEST_ENDPOINT,
-                            data: scope.data
-                        }).then(function () {
-                            var email = scope.data.email;
-                            var successMsg = gettextCatalog.getString('We\'ve sent an email to {{userEmail}} that contains a link to reset your password.', {userEmail: email});
-
-                            scope.data = {};
-                            // TODO: this should come from the API.
-                            $rootScope.app.page.messages = [{
-                                msg: successMsg,
-                                type: 'success'
-                            }];
-
-                            form.$setPristine();
-
-                            if (angular.isDefined(deferred)) {
-                                deferred.notify('resolve', response);
-                            }
-                        }, function (response) {
-                            angular.forEach(response.data, function (error, field) {
-                                scope.fields[field].errors = error[0];
-                            });
-
-                            if (angular.isDefined(deferred)) {
-                                deferred.notify('reject', response);
-                            }
-                        });
-                    }
+                        if (angular.isDefined(deferred)) {
+                            deferred.notify('reject', response);
+                        }
+                    });
                 };
             }
         };

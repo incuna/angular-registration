@@ -1,3 +1,7 @@
+# 0.5.7
+
+* Return error when user leaves email field blank when requesting a password reset.
+
 # 0.5.6
 
 * Fix for translating the password success message
